@@ -1,15 +1,12 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files
-
 # Dependencies
 node_modules/
-package-lock.json
-yarn.lock
 
 # Compiled output
 dist/*
 !dist/index*
 !dist/insertCss*
 !dist/StyleContext*
+!dist/useStyles*
 !dist/withStyles*
 
 # Test coverage

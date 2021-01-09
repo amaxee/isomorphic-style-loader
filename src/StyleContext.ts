@@ -7,12 +7,14 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-const lint = require('./lint')
-const test = require('./test')
+import React from 'react';
 
-async function preCommit() {
-  await lint()
-  await test()
+export interface StyleContextType {
+  insertCss: null | ((...styles: Array<any>) => () => void);
 }
 
-module.exports = preCommit().catch(process.exit)
+const StyleContext = React.createContext<StyleContextType>({
+  insertCss: null,
+});
+
+export default StyleContext;

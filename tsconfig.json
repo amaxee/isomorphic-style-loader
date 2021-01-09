@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "noEmitOnError": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "sourceMap": true
+  },
+  "include": [
+    "./src/index.ts",
+    "./src/insertCss.ts",
+    "./src/StyleContext.ts",
+    "./src/useStyles.ts",
+    "./src/withStyles.tsx"
+  ],
+  "exclude": [
+    "**/*.test.{js,jsx,ts,tsx}",
+    "**/dist",
+    "**/node_modules"
+  ]
+}

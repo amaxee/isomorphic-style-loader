@@ -1,56 +1,46 @@
-/*! Isomorphic Style Loader | MIT License | https://github.com/kriasoft/isomorphic-style-loader */
-
-'use strict';
-
-var React = require('react');
-var hoistStatics = require('hoist-non-react-statics');
-var StyleContext = require('./StyleContext.js');
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
-
-function withStyles() {
-  for (var _len = arguments.length, styles = new Array(_len), _key = 0; _key < _len; _key++) {
-    styles[_key] = arguments[_key];
-  }
-
-  return function wrapWithStyles(ComposedComponent) {
-    var WithStyles = function (_React$PureComponent) {
-      _inheritsLoose(WithStyles, _React$PureComponent);
-
-      function WithStyles(props, context) {
-        var _this;
-
-        _this = _React$PureComponent.call(this, props, context) || this;
-        _this.removeCss = context.insertCss.apply(context, styles);
-        return _this;
-      }
-
-      var _proto = WithStyles.prototype;
-
-      _proto.componentWillUnmount = function componentWillUnmount() {
-        if (this.removeCss) {
-          setTimeout(this.removeCss, 0);
+"use strict";
+/**
+ * Isomorphic CSS style loader for Webpack
+ *
+ * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const hoist_non_react_statics_1 = __importDefault(require("hoist-non-react-statics"));
+const invariant_1 = __importDefault(require("invariant"));
+const react_1 = __importDefault(require("react"));
+const StyleContext_1 = __importDefault(require("./StyleContext"));
+function withStyles(...styles) {
+    return function wrapWithStyles(WrappedComponent) {
+        class WithStyles extends react_1.default.PureComponent {
+            constructor(props, context) {
+                super(props, context);
+                invariant_1.default(context.insertCss !== null, "Expected 'insertCss' method in 'StyleContext.Provider'.");
+                // @ts-ignore invariant guard substituted
+                this.removeCss = context.insertCss(...styles);
+            }
+            componentWillUnmount() {
+                if (this.removeCss) {
+                    setTimeout(() => {
+                        // @ts-ignore invariant guard substituted
+                        this.removeCss();
+                    }, 0);
+                }
+            }
+            render() {
+                return react_1.default.createElement(WrappedComponent, Object.assign({}, this.props));
+            }
         }
-      };
-
-      _proto.render = function render() {
-        return React.createElement(ComposedComponent, this.props);
-      };
-
-      return WithStyles;
-    }(React.PureComponent);
-
-    var displayName = ComposedComponent.displayName || ComposedComponent.name || 'Component';
-    WithStyles.displayName = "WithStyles(" + displayName + ")";
-    WithStyles.contextType = StyleContext;
-    WithStyles.ComposedComponent = ComposedComponent;
-    return hoistStatics(WithStyles, ComposedComponent);
-  };
+        WithStyles.displayName = `WithStyles(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+        WithStyles.contextType = StyleContext_1.default;
+        WithStyles.WrappedComponent = WrappedComponent;
+        return hoist_non_react_statics_1.default(WithStyles, WrappedComponent);
+    };
 }
-
-module.exports = withStyles;
+exports.default = withStyles;
 //# sourceMappingURL=withStyles.js.map

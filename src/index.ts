@@ -7,15 +7,17 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import { stringifyRequest } from 'loader-utils'
+import { stringifyRequest } from 'loader-utils';
 
-module.exports = function loader() {}
-module.exports.pitch = function pitch(request) {
+module.exports = function loader() {
+  // do nothing
+};
+
+module.exports.pitch = function pitch(request: any) {
   if (this.cacheable) {
-    this.cacheable()
+    this.cacheable();
   }
-
-  const insertCss = require.resolve('./insertCss.js')
+  const insertCss = require.resolve('./insertCss.js');
   return `
     var refs = 0;
     var css = require(${stringifyRequest(this, `!!${request}`)});
@@ -39,5 +41,5 @@ module.exports.pitch = function pitch(request) {
       });
       module.hot.dispose(function() { removeCss(); });
     }
-  `
-}
+  `;
+};
